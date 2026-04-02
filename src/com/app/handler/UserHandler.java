@@ -35,7 +35,7 @@ public class UserHandler implements HttpHandler {
       handleCreate(exchange);
 
     } else if (method.equals("DELETE") && path.startsWith("/api/users/")) {
-      String id = path.replace("/api/users", "");
+      String id = path.replace("/api/users/", "");
 
       handleDelete(exchange, id);
 
