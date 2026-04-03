@@ -13,7 +13,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.app.model.User;
 import com.app.service.UserService;
-import com.app.util.Logger;
 import com.app.exception.NotFoundException;
 import com.app.exception.ValidationException;
 
@@ -85,7 +84,6 @@ public class UserHandler implements HttpHandler {
 
       sendJsonResponse(exchange, 201, json);
     } catch (ValidationException e) {
-      Logger.printLn(e.getMessage());
       sendResponse(exchange, 400, e.getMessage());
     }
   }
