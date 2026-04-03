@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.app.model.User;
 import com.app.repository.UserRepository;
+import com.app.exception.ValidationException;
 
 public class UserService {
-  private UserRepository repository;
+private UserRepository repository;
 
   public UserService(UserRepository repository) {
     this.repository = repository;
@@ -14,11 +15,11 @@ public class UserService {
 
   public User createUser(String name, String email, int age) {
     if (name == null || name.isEmpty()) {
-      throw new IllegalArgumentException("Missing required field name");
+      throw new ValidationException("Missing required field name");
     }
 
     if (email == null || !email.contains("@")) {
-      throw new IllegalArgumentException("Missing required field email");
+      throw new ValidationException("Missing required field email");
     }
 
     User user = new User(name, email, age);
