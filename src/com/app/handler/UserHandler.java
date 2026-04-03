@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.app.model.User;
-import com.app.service.UserService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.app.model.User;
+import com.app.service.UserService;
+import com.app.util.Logger;
+import com.app.exception.NotFoundException;
+import com.app.exception.ValidationException;
 
 public class UserHandler implements HttpHandler {
   private UserService service;
@@ -81,7 +84,8 @@ public class UserHandler implements HttpHandler {
       String json = "{\"id\":\"" + user.getId() + "\",\"name\":\"" + user.getName() + "\"}";
 
       sendJsonResponse(exchange, 201, json);
-    } catch (IllegalArgumentException e) {
+    } catch (ValidationException e) {
+      Logger.printLn(e.getMessage());
       sendResponse(exchange, 400, e.getMessage());
     }
   }
@@ -110,8 +114,11 @@ public class UserHandler implements HttpHandler {
       String json = "{\"id\":\"" + user.getId() + "\",\"name\":\"" + user.getName() + "\"}";
 
       sendJsonResponse(exchange, 200, json);
-    } catch (Exception e) {
+    } catch (NotFoundException e) {
       sendResponse(exchange, 404, e.getMessage());
+
+    } catch (ValidationException e) {
+      sendResponse(exchange, 400, e.getMessage());
     }
   }
   
