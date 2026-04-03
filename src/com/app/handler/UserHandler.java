@@ -6,10 +6,11 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.app.model.User;
 import com.app.service.UserService;
-import com.app.util.Logger;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -25,9 +26,6 @@ public class UserHandler implements HttpHandler {
     String method = exchange.getRequestMethod();
     String path = exchange.getRequestURI().getPath();
 
-    Logger.printLn(method);
-    Logger.printLn(path);
-
     if (method.equals("GET") && path.equals("/api/users")) {
       handleGetAll(exchange);
 
@@ -38,6 +36,11 @@ public class UserHandler implements HttpHandler {
       String id = path.replace("/api/users/", "");
 
       handleDelete(exchange, id);
+
+    } else if (method.equals("PUT") && path.startsWith("/api/users/")) {
+      String id = path.replace("/api/users/", "");
+
+      handleUpdate(exchange, id);
 
     } else {
       sendResponse(exchange, 405, "Method Not Allowed");
@@ -67,30 +70,14 @@ public class UserHandler implements HttpHandler {
   }
 
   private void handleCreate(HttpExchange exchange) throws IOException {
-    InputStream body = exchange.getRequestBody();
-    String raw = new String(body.readAllBytes(), StandardCharsets.UTF_8);
-
-    String name = "";
-    String email = "";
-    int age = 0;
-
-    for (String param : raw.split("&")) {
-      String[] pair = param.split("=");
-
-      if (pair.length < 2) continue;
-
-      String key = pair[0];
-      String value = URLDecoder.decode(pair[1], StandardCharsets.UTF_8);
-
-      switch (key) {
-        case "name" -> name = value;
-        case "email" -> email = value;
-        case "age" -> age = Integer.parseInt(value);
-      }
-    }
-
+    Map<String, String> params = parseBody(exchange);
+    
     try {
-      User user = service.createUser(name, email, age);
+      User user = service.createUser(
+        params.getOrDefault("name", ""),
+        params.getOrDefault("email", ""),
+        Integer.parseInt(params.getOrDefault("age", "0"))
+      );
       String json = "{\"id\":\"" + user.getId() + "\",\"name\":\"" + user.getName() + "\"}";
 
       sendJsonResponse(exchange, 201, json);
@@ -110,6 +97,25 @@ public class UserHandler implements HttpHandler {
     }
   }
 
+  private void handleUpdate(HttpExchange exchange, String id) throws IOException {
+    Map<String, String> params = parseBody(exchange);
+
+    try {
+      User user = service.updateUser(
+        id,
+        params.getOrDefault("name", ""),
+        params.getOrDefault("email", ""),
+        Integer.parseInt(params.getOrDefault("age", ""))
+      );
+      String json = "{\"id\":\"" + user.getId() + "\",\"name\":\"" + user.getName() + "\"}";
+
+      sendJsonResponse(exchange, 200, json);
+    } catch (Exception e) {
+      sendResponse(exchange, 404, e.getMessage());
+    }
+  }
+  
+  
   private void sendJsonResponse(HttpExchange exchange, int status, String body) throws IOException {
     exchange.getResponseHeaders().set("Content-type", "application/json");
 
@@ -124,5 +130,21 @@ public class UserHandler implements HttpHandler {
 
     out.write(bytes);
     out.close();
+  }
+
+  private Map<String, String> parseBody(HttpExchange exchange) throws IOException {
+    InputStream body = exchange.getRequestBody();
+    String raw = new String(body.readAllBytes(), StandardCharsets.UTF_8);
+    Map<String, String> params = new HashMap<>();
+
+    for (String param : raw.split("&")) {
+      String[] pair = param.split("=");
+
+      if (pair.length < 2) continue;
+
+      params.put(pair[0], URLDecoder.decode(pair[1], StandardCharsets.UTF_8));
+    }
+
+    return params;
   }
 }
