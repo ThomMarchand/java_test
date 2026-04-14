@@ -2,9 +2,9 @@ package com.app.service;
 
 import java.util.List;
 
+import com.app.exception.ValidationException;
 import com.app.model.User;
 import com.app.repository.UserRepository;
-import com.app.exception.ValidationException;
 
 public class UserService {
 private UserRepository repository;

@@ -11,10 +11,11 @@ import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.app.model.User;
-import com.app.service.UserService;
+
 import com.app.exception.NotFoundException;
 import com.app.exception.ValidationException;
+import com.app.model.User;
+import com.app.service.UserService;
 
 public class UserHandler implements HttpHandler {
   private UserService service;
