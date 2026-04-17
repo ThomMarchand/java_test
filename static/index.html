@@ -66,7 +66,9 @@
         });
 
       async function deleteUser(id) {
-        const res = await fetch("/api/users/" + "coucou", { method: "DELETE" });
+        console.log("id send =>", id);
+        const res = await fetch("/api/users/" + id, { method: "DELETE" });
+        console.log("retour server => ", res);
 
         if (!res.ok) {
           const errorMessage = await res.text();

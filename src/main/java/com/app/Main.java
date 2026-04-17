@@ -3,12 +3,13 @@ package com.app;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import com.app.util.Logger;
+import com.sun.net.httpserver.HttpServer;
+
 import com.app.handler.StaticFileHandler;
 import com.app.handler.UserHandler;
 import com.app.repository.UserRepository;
 import com.app.service.UserService;
-import com.sun.net.httpserver.HttpServer;
+import com.app.util.Logger;
 
 public class Main {
   public static void main(String[] args) throws IOException {
@@ -24,5 +25,6 @@ public class Main {
     server.start();
 
     Logger.printLn("Server running on : http://localhost:" + port);
+    Logger.printLn("Database : crud.sqlite");
   }
 }
