@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,9 @@ public class UserHandler implements HttpHandler {
   }
 
   private void handleGetAll(HttpExchange exchange) throws IOException {
+    try {
+      
+    
     List<User> users = service.findAllUsers();
 
     StringBuilder json = new StringBuilder("[");
@@ -70,6 +74,9 @@ public class UserHandler implements HttpHandler {
     json.append("]");
 
     sendJsonResponse(exchange, 200, json.toString());
+    } catch (SQLException e) {
+      sendResponse(exchange, 500, e.getMessage());
+    }
   }
 
   private void handleCreate(HttpExchange exchange) throws IOException {
@@ -86,17 +93,25 @@ public class UserHandler implements HttpHandler {
       sendJsonResponse(exchange, 201, json);
     } catch (ValidationException e) {
       sendResponse(exchange, 400, e.getMessage());
+    } catch (SQLException e) {
+      sendResponse(exchange, 500, e.getMessage());
     }
   }
 
   private void handleDelete(HttpExchange exchange, String id) throws IOException {
-    boolean deleted = service.deleteUser(id);
+    try {
+      
+    
+      boolean deleted = service.deleteUser(id);
 
-    if (deleted) {
-      sendResponse(exchange, 200, "User deleted");
+      if (deleted) {
+        sendResponse(exchange, 200, "User deleted");
 
-    } else {
-      sendResponse(exchange, 404, "User not found");
+      } else {
+        sendResponse(exchange, 404, "User not found");
+      }
+    } catch (SQLException e) {
+      sendResponse(exchange, 500, e.getMessage());
     }
   }
 
@@ -118,6 +133,8 @@ public class UserHandler implements HttpHandler {
 
     } catch (ValidationException e) {
       sendResponse(exchange, 400, e.getMessage());
+    } catch (SQLException e) {
+      sendResponse(exchange, 500, e.getMessage());
     }
   }
   

@@ -25,5 +25,6 @@ public class Main {
     server.start();
 
     Logger.printLn("Server running on : http://localhost:" + port);
+    Logger.printLn("Database : crud.sqlite");
   }
 }
