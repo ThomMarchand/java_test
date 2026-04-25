@@ -1,6 +1,7 @@
 package com.app;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
@@ -12,9 +13,9 @@ import com.app.service.UserService;
 import com.app.util.Logger;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, SQLException {
     int port = 8081;
-    UserRepository repository = new UserRepository();
+    UserRepository repository = new UserRepository(Database.getConnection());
     UserService service = new UserService(repository);
 
     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);

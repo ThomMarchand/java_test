@@ -1,11 +1,16 @@
 package com.app.repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.app.model.User;
 
 public class UserRepository extends AbstractRepository<User> {
+  public UserRepository(Connection connection) {
+    super(connection);
+  }
+
   @Override
   protected String getTableName() {
     return "users";
