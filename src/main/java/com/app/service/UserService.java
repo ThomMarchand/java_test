@@ -3,6 +3,7 @@ package com.app.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.app.exception.NotFoundException;
 import com.app.exception.ValidationException;
 import com.app.model.User;
 import com.app.repository.UserRepository;
@@ -39,7 +40,17 @@ private UserRepository repository;
   }
 
   public User updateUser(String id, String name, String email, int age) throws SQLException {
+    if (name == null || name.isEmpty()) {
+      throw new ValidationException("Missing required field name");
+    }
+
+    if (email == null || !email.contains("@")) {
+      throw new ValidationException("Missing required field email");
+    }
+
     User user = repository.findById(id);
+
+    if (user == null) throw new NotFoundException("User not found");
 
     user.setName(name);
     user.setEmail(email);
