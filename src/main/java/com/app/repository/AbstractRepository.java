@@ -52,7 +52,7 @@ public abstract class AbstractRepository<T> implements Repository<T> {
 
   @Override
   public boolean delete(String id) throws SQLException {
-    String sql = "DELETE FROM " + getTableName() + " WHERE idd = ?";
+    String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
     try (PreparedStatement stmt = Database.getConnection().prepareStatement(sql)) {
       stmt.setString(1, id);
