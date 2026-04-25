@@ -4,9 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.Database;
-
 public abstract class AbstractRepository<T> implements Repository<T> {
+  private final Connection connection;
+
+  protected AbstractRepository(Connection connection) {
+    this.connection = connection;
+  }
+
   protected abstract String getTableName();
   protected abstract String getInsertSql();
   protected abstract void bindInsertParams(PreparedStatement stmt, T entity) throws SQLException;
@@ -14,14 +18,17 @@ public abstract class AbstractRepository<T> implements Repository<T> {
 
   @Override
   public void save(T entity) throws SQLException {
-    try (PreparedStatement stmt = Database.getConnection().prepareStatement(getInsertSql())) {}
+    try (PreparedStatement stmt = connection.prepareStatement(getInsertSql())) {
+      bindInsertParams(stmt, entity);
+      stmt.executeUpdate();
+    }
   }
 
   @Override
   public T findById(String id) throws SQLException {
     String sql = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
-    try (PreparedStatement stmt = Database.getConnection().prepareStatement(sql)) {
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, id);
 
       ResultSet rs = stmt.executeQuery();
@@ -39,7 +46,7 @@ public abstract class AbstractRepository<T> implements Repository<T> {
     String sql = "SELECT * FROM " + getTableName();
     List<T> results = new ArrayList<>();
 
-    try (Statement stmt = Database.getConnection().createStatement()) {
+    try (Statement stmt = connection.createStatement()) {
       ResultSet rs = stmt.executeQuery(sql);
 
       while (rs.next()) {
@@ -54,7 +61,7 @@ public abstract class AbstractRepository<T> implements Repository<T> {
   public boolean delete(String id) throws SQLException {
     String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
-    try (PreparedStatement stmt = Database.getConnection().prepareStatement(sql)) {
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, id);
 
       return stmt.executeUpdate() > 0;

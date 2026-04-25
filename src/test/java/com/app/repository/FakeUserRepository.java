@@ -11,6 +11,10 @@ public class FakeUserRepository extends UserRepository {
 
   private final Map<String, User> store = new HashMap<>();
 
+  public FakeUserRepository() {
+    super(null);
+  }
+
   @Override
   public void save(User user) {
     store.put(user.getId(), user);
