@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
