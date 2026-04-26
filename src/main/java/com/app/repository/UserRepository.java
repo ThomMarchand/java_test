@@ -6,7 +6,15 @@ import java.sql.SQLException;
 
 import com.app.model.User;
 
+/**
+ * {@link com.app.repository.Repository} implementation for {@link User} entities,
+ * backed by the {@code users} SQLite table.
+ */
 public class UserRepository extends AbstractRepository<User> {
+
+  /**
+   * @param connection the shared database connection
+   */
   public UserRepository(Connection connection) {
     super(connection);
   }

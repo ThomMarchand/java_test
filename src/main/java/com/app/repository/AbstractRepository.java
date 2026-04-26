@@ -4,16 +4,46 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Template implementation of {@link Repository} that handles common SQL operations.
+ *
+ * <p>Subclasses provide the table name, the INSERT statement, parameter binding,
+ * and a {@link RowMapper} — this class takes care of the rest.</p>
+ *
+ * @param <T> the entity type managed by this repository
+ */
 public abstract class AbstractRepository<T> implements Repository<T> {
   private final Connection connection;
 
+  /**
+   * @param connection the shared database connection
+   */
   protected AbstractRepository(Connection connection) {
     this.connection = connection;
   }
 
+  /**
+   * @return the database table name for this entity (e.g. {@code "users"})
+   */
   protected abstract String getTableName();
+
+  /**
+   * @return the INSERT (or INSERT OR REPLACE) SQL statement for this entity
+   */
   protected abstract String getInsertSql();
+
+  /**
+   * Binds the entity's fields onto the given prepared statement.
+   *
+   * @param stmt   the prepared statement produced from {@link #getInsertSql()}
+   * @param entity the entity whose fields to bind
+   * @throws SQLException if a field cannot be bound
+   */
   protected abstract void bindInsertParams(PreparedStatement stmt, T entity) throws SQLException;
+
+  /**
+   * @return a {@link RowMapper} that converts a result-set row into an entity
+   */
   protected abstract RowMapper<T> getRowMapper();
 
   @Override
