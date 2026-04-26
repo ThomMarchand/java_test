@@ -18,13 +18,35 @@ import com.app.exception.ValidationException;
 import com.app.model.User;
 import com.app.service.UserService;
 
+/**
+ * HTTP handler that routes {@code /api/users} requests to the {@link UserService}.
+ *
+ * <p>Supported routes:</p>
+ * <ul>
+ *   <li>{@code GET  /api/users}        — list all users</li>
+ *   <li>{@code POST /api/users}        — create a user</li>
+ *   <li>{@code PUT  /api/users/{id}}   — update a user</li>
+ *   <li>{@code DELETE /api/users/{id}} — delete a user</li>
+ * </ul>
+ */
 public class UserHandler implements HttpHandler {
   private UserService service;
 
+  /**
+   * @param service the service handling user business logic
+   */
   public UserHandler(UserService service) {
     this.service = service;
   }
 
+  /**
+   * Dispatches the incoming request to the appropriate handler method based on
+   * the HTTP method and path. Responds with {@code 405 Method Not Allowed} for
+   * unrecognised routes.
+   *
+   * @param exchange the HTTP exchange containing request and response
+   * @throws IOException if writing the response fails
+   */
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     String method = exchange.getRequestMethod();

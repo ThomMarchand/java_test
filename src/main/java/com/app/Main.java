@@ -12,7 +12,20 @@ import com.app.repository.UserRepository;
 import com.app.service.UserService;
 import com.app.util.Logger;
 
+/**
+ * Application entry point.
+ *
+ * <p>Wires up the dependency graph, registers HTTP contexts, and starts the server.</p>
+ */
 public class Main {
+
+  /**
+   * Starts the HTTP server on port {@code 8081}.
+   *
+   * @param args command-line arguments (unused)
+   * @throws IOException  if the server socket cannot be opened
+   * @throws SQLException if the database connection or schema initialisation fails
+   */
   public static void main(String[] args) throws IOException, SQLException {
     int port = 8081;
     UserRepository repository = new UserRepository(Database.getConnection());
