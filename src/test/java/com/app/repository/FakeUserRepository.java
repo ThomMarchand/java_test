@@ -7,26 +7,31 @@ import java.util.Map;
 
 import com.app.model.User;
 
-public class UserRepository {
-  private Map<String, User> store = new HashMap<>();
+public class FakeUserRepository extends UserRepository {
 
+  private final Map<String, User> store = new HashMap<>();
+
+  public FakeUserRepository() {
+    super(null);
+  }
+
+  @Override
   public void save(User user) {
     store.put(user.getId(), user);
   }
 
-  public User findBy(String id) {
+  @Override
+  public User findById(String id) {
     return store.get(id);
   }
 
+  @Override
   public List<User> findAll() {
     return new ArrayList<>(store.values());
   }
 
+  @Override
   public boolean delete(String id) {
     return store.remove(id) != null;
-  }
-
-  public boolean exists(String id) {
-    return store.containsKey(id);
   }
 }

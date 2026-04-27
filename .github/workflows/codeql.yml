@@ -1,0 +1,39 @@
+name: CodeQL
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  analyze:
+    name: Analyze (Java)
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: java
+
+      - name: Build
+        run: mvn compile --batch-mode
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4

@@ -9,7 +9,21 @@ import java.nio.file.Paths;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * HTTP handler that serves static files from the {@code static/} directory.
+ *
+ * <p>Requests to {@code /} are redirected to {@code /index.html}.
+ * Returns {@code 404} implicitly if the file does not exist.</p>
+ */
 public class StaticFileHandler implements HttpHandler {
+
+  /**
+   * Resolves the requested URI to a file inside {@code static/} and writes
+   * its content to the response with the appropriate {@code Content-Type} header.
+   *
+   * @param exchange the HTTP exchange containing request and response
+   * @throws IOException if reading the file or writing the response fails
+   */
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     String uri = exchange.getRequestURI().getPath();
