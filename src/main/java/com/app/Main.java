@@ -7,7 +7,9 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
 import com.app.handler.StaticFileHandler;
-import com.app.handler.UserHandler;
+import com.app.handler.api.UserHandler;
+import com.app.handler.template.LandingTemplateHandler;
+import com.app.renderer.TemplateRenderer;
 import com.app.repository.UserRepository;
 import com.app.service.UserService;
 import com.app.util.Logger;
@@ -28,13 +30,17 @@ public class Main {
    */
   public static void main(String[] args) throws IOException, SQLException {
     int port = 8081;
+    TemplateRenderer renderer = new TemplateRenderer();
     UserRepository repository = new UserRepository(Database.getConnection());
     UserService service = new UserService(repository);
+
 
     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
     server.createContext("/api/users", new UserHandler(service));
+
     server.createContext("/", new StaticFileHandler());
+    server.createContext("/landing", new LandingTemplateHandler(service, renderer));
 
     server.start();
 
