@@ -1,9 +1,8 @@
 package com.app.renderer;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-
-import com.app.model.User;
+import java.util.Map;
 
 import gg.jte.CodeResolver;
 import gg.jte.ContentType;
@@ -15,21 +14,24 @@ public class TemplateRenderer {
   private final TemplateEngine templateEngine;
 
   public TemplateRenderer() {
-    CodeResolver codeResolver = new DirectoryCodeResolver(Path.of("src/main/jte"));
+    Path templateDir = Path.of("src/main/jte");
 
-    this.templateEngine = TemplateEngine.create(
-        codeResolver,
-        Path.of("jte-classes"),
-        ContentType.Html,
-        TemplateRenderer.class.getClassLoader()
-    );
+    if (Files.exists(templateDir)) {
+      CodeResolver codeResolver = new DirectoryCodeResolver(templateDir);
+      this.templateEngine = TemplateEngine.create(
+          codeResolver,
+          Path.of("jte-classes"),
+          ContentType.Html,
+          TemplateRenderer.class.getClassLoader()
+      );
+    } else {
+      this.templateEngine = TemplateEngine.createPrecompiled(ContentType.Html);
+    }
   }
 
-  public String renderUsers(List<User> users) {
+  public String render(String template, Map<String, Object> params) {
     StringOutput output = new StringOutput();
-
-    templateEngine.render("users.jte", users, output);
-
+    templateEngine.render(template, params, output);
     return output.toString();
   }
 }

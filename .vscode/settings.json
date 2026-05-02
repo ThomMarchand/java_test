@@ -1,3 +1,7 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.project.exclusions": ["**/jte-classes/**"],
+  "files.exclude": {
+    "jte-classes": true
+  }
 }

@@ -3,6 +3,7 @@ package com.app.handler.template;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import com.app.model.User;
 import com.app.renderer.TemplateRenderer;
@@ -23,7 +24,7 @@ public class LandingTemplateHandler implements HttpHandler {
   public void handle(HttpExchange exchange) throws IOException {
     try {
         List<User> users = userService.findAllUsers();
-        String html = renderer.renderUsers(users);
+        String html = renderer.render("users.jte", Map.of("users", users));
         
         exchange.getResponseHeaders().set("Content-type", "text/html; charset=utf-8");
         exchange.sendResponseHeaders(200, html.getBytes().length);

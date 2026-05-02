@@ -3,15 +3,11 @@
 
 @param List<User> users
 
-<!DOCTYPE html>
-<html>
-<head><title>Users</title></head>
-<body>
+@template.layout(title = "Utilisateurs", content = @`
   <h1>Liste des utilisateurs</h1>
   <ul>
     @for(User user : users)
       <li>${user.getName()} — ${user.getEmail()}</li>
     @endfor
   </ul>
-</body>
-</html>
+`)

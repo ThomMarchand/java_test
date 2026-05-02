@@ -47,6 +47,34 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>gg.jte</groupId>
+                                        <artifactId>jte-maven-plugin</artifactId>
+                                        <versionRange>[3.0,)</versionRange>
+                                        <goals><goal>generate</goal></goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>false</runOnIncremental>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -79,6 +107,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
+            </plugin>
+            <plugin>
+                <groupId>gg.jte</groupId>
+                <artifactId>jte-maven-plugin</artifactId>
+                <version>3.1.12</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/jte</sourceDirectory>
+                    <targetDirectory>${project.basedir}/target/generated-sources/jte</targetDirectory>
+                    <contentType>Html</contentType>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals><goal>generate</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
