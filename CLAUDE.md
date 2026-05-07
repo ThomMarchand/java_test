@@ -61,9 +61,39 @@ Server starts on **port 8081**. Database file `crud.sqlite` is created in the wo
 
 ## JTE templates
 
-Templates live in `src/main/jte/`. The `jte-maven-plugin` pre-compiles them during `generate-sources`. Run `mvn generate-sources` (or `mvn compile`) after modifying a `.jte` file before running the app.
+Toutes les pages SSR sont rendues via JTE. La page statique `landing` (servie par
+`StaticFileHandler`) est amenée à disparaître ; à terme, tout le rendu HTML passe
+par des handlers JTE dans `handler/template/`.
 
-`TemplateRenderer` auto-detects mode: uses `DirectoryCodeResolver` (live reload) when `src/main/jte/` exists, falls back to `TemplateEngine.createPrecompiled` inside the packaged JAR.
+### Structure du dossier `src/main/jte/`
+
+```
+src/main/jte/
+  layout.jte        — shell HTML complet (<!DOCTYPE>, <head>, <nav>, <main>)
+                      accepte `String title` + `Content content` (slot JTE)
+  styles.jte        — point d'entrée CSS : importe reset.jte puis global.jte
+  styles/
+    reset.jte       — CSS reset
+    global.jte      — variables et styles du design system
+  pages/
+    users.jte       — page liste des utilisateurs ; reçoit List<User>,
+                      délègue le shell à @template.layout(…)
+```
+
+Chaque page dans `pages/` reçoit ses données Java en paramètre `@param` et compose
+avec `@template.layout(title = "…", content = @\`…\`)` pour injecter son contenu
+dans le slot.
+
+`styles.jte` est inclus directement dans `layout.jte` pour centraliser les imports
+CSS — ne pas dupliquer les `@template.styles.*` dans les pages individuelles.
+
+Le plugin Maven `jte-maven-plugin` pré-compile les templates au moment de
+`generate-sources`. Après toute modification d'un `.jte`, relancer
+`mvn generate-sources` (ou `mvn compile`) avant de démarrer l'application.
+
+`TemplateRenderer` auto-détecte le mode : `DirectoryCodeResolver` (rechargement à
+chaud) quand `src/main/jte/` existe, sinon `TemplateEngine.createPrecompiled` dans
+le JAR packagé.
 
 ## API
 
