@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
 
+import com.app.handler.CssHandler;
 import com.app.handler.StaticFileHandler;
 import com.app.handler.api.UserHandler;
 import com.app.handler.template.LandingTemplateHandler;
@@ -38,6 +39,7 @@ public class Main {
     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
     server.createContext("/api/users", new UserHandler(service));
+    server.createContext("/styles.css", new CssHandler(renderer));
 
     server.createContext("/", new StaticFileHandler());
     server.createContext("/landing", new LandingTemplateHandler(service, renderer));
