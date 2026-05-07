@@ -32,6 +32,7 @@ public class TemplateRenderer {
   public String render(String template, Map<String, Object> params) {
     StringOutput output = new StringOutput();
     templateEngine.render(template, params, output);
+    
     return output.toString();
   }
 }

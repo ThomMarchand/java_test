@@ -24,7 +24,7 @@ public class LandingTemplateHandler implements HttpHandler {
   public void handle(HttpExchange exchange) throws IOException {
     try {
         List<User> users = userService.findAllUsers();
-        String html = renderer.render("users.jte", Map.of("users", users));
+        String html = renderer.render("pages/users.jte", Map.of("users", users));
         
         exchange.getResponseHeaders().set("Content-type", "text/html; charset=utf-8");
         exchange.sendResponseHeaders(200, html.getBytes().length);
