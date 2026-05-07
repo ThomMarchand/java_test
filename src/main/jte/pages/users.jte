@@ -1,11 +1,14 @@
 @import java.util.List
 @import com.app.model.User
+@import com.app.ui.TitleVariant
 @import com.app.ui.TextVariant
 
 @param List<User> users
 
 @template.layout(title = "Utilisateurs", content = @`
-  <h1>Liste des utilisateurs</h1>
+  @template.atoms.title(label = "Whereas disregard", variant = TitleVariant.H1)
+  @template.atoms.title(label = "Whereas disregard", variant = TitleVariant.H2)
+  @template.atoms.title(label = "Whereas disregard", variant = TitleVariant.H3)
 
   @template.atoms.text(label = "Voici la liste des utilisateurs enregistrés dans notre système.", variant = TextVariant.BODY_REGULAR)
   @template.atoms.text(label = "Voici la liste des utilisateurs enregistrés dans notre système.", variant = TextVariant.BODY_MEDIUM)

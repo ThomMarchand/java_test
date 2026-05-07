@@ -20,4 +20,5 @@
   font-family: var(--font-secondary);
   font-weight: var(--font-secondary-700);
   font-size: 11px;
+  letter-spacing: 1.5px;
 }
