@@ -1,4 +1,4 @@
-package com.app.handler;
+package com.app.handler.api;
 
 import java.io.IOException;
 import java.io.InputStream;

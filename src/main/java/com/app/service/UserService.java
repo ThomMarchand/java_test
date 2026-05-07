@@ -11,7 +11,7 @@ import com.app.repository.UserRepository;
 /**
  * Business logic layer for user management.
  *
- * <p>Bridges the HTTP layer ({@link com.app.handler.UserHandler}) and the
+ * <p>Bridges the HTTP layer ({@link com.com.app.handler.api.UserHandler}) and the
  * persistence layer ({@link com.app.repository.UserRepository}), enforcing
  * validation rules before any data operation.</p>
  */
