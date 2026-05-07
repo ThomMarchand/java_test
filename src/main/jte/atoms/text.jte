@@ -1,4 +1,6 @@
-@param String label
-@param String variant
+@import com.app.ui.TextVariant
 
-<p class="${variant}">${label}</p>
+@param String label
+@param TextVariant variant
+
+<p class="${variant.cssClass()}">${label}</p>
