@@ -11,7 +11,8 @@
 </head>
 <body>
   <nav>
-    <a href="/landing">Utilisateurs</a>
+    <a href="/">Accueil</a>
+    <a href="/landing">Landing</a>
   </nav>
   <main>
     ${content}
