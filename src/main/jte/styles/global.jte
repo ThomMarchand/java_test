@@ -1,7 +1,6 @@
-/* Fonts */
 @font-face {
   font-family: "DM Sans";
-  src: url("fonts/DMSans-Regular.ttf") format("truetype");
+  src: url("/fonts/DMSans-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -9,7 +8,7 @@
 
 @font-face {
   font-family: "DM Sans";
-  src: url("fonts/DMSans-Medium.ttf") format("truetype");
+  src: url("/fonts/DMSans-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -17,7 +16,7 @@
 
 @font-face {
   font-family: "DM Sans";
-  src: url("fonts/DMSans-Bold.ttf") format("truetype");
+  src: url("/fonts/DMSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -25,7 +24,7 @@
 
 @font-face {
   font-family: "Syne";
-  src: url("fonts/Syne-Bold.ttf") format("truetype");
+  src: url("/fonts/Syne-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -33,13 +32,23 @@
 
 @font-face {
   font-family: "Syne";
-  src: url("fonts/Syne-ExtraBold.ttf") format("truetype");
+  src: url("/fonts/Syne-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
+  /* Fonts */
+  --font-primary: "Syne", sans-serif;
+  --font-primary-700: 700;
+  --font-primary-800: 800;
+
+  --font-secondary: "DM Sans", sans-serif;
+  --font-secondary-400: 400;
+  --font-secondary-500: 500;
+  --font-secondary-700: 700;
+
   /* Primary (rouge) */
   --primary-50: #fdecea;
   --primary-100: #fac5bf;
